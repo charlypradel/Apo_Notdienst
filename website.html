@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Notdienste Bottrop</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <!--<meta http-equiv="refresh" content="60">  Content = #seconds -->
+</head>
+
+<body>
+    <header>
+        <div id="logo">
+            <img src="pictures/glueckauflogo.png" alt="Logo" style="height: 20vh;border-radius: 33px" />
+        </div>
+
+        <div id="notdienst">
+            <p style="color: white; font-size: 6.5vh; text-shadow: 0px 4px 4px rgba(172, 157, 157, 0.25);">NOTDIENSTE
+            </p>
+            <p style="color: white; font-size: 3vh;"></p>
+            <p id="date" style="color: white; font-size: 3vh;"></p>
+        </div>
+    </header>
+    <p style="text-align: center; color:rgb(216, 15, 15); font-size: 3.4vh;
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.678);">
+        Die Dienste sind ab 9 Uhr morgens für 24 Stunden gültig
+    </p>
+    <div id='apos'>
+        <div class='apo'>
+            <p id="dienst0"></p>
+            <p class='distance' id='dist0'></p>
+        </div>
+        <div class='apo'>
+            <p id="dienst1"></p>
+            <p class='distance' id='dist1'></p>
+        </div>
+        <div class='apo'>
+            <p id="dienst2"></p>
+            <p class='distance' id='dist2'><i class='fas fa-map-marker-alt'></i></p>
+        </div>
+    </div>
+    <i class='fas fa-map-marker-alt'></i>
+
+    <div class="werbung">
+        <p style="width: 100vw; text-align: center;">Unsere Angebote</p>
+        <figure id="gallery">
+            <figure>
+                <img src="pictures/bild1.jpeg" alt="werbebild1" width="500vw">
+            </figure>
+            <figure>
+                <img src="pictures/bild2.jpeg" alt="werbebild2" width="500vw">
+            </figure>
+            <figure>
+                <img src="pictures/bild3.jpeg" alt="werbebild3" width="500vw">
+            </figure>
+        </figure>
+    </div>
+
+
+
+
+</body>
+
+<script>
+    function clockDate() {
+        var d = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+        document.getElementById("date").innerHTML = d.toLocaleString('de-DE', options) + " Uhr";
+    }
+    // here we run the clockTick function every 1000ms (1 second)
+    setInterval(clockDate, 10000);
+</script>
+
+
+<script type="text/javascript">
+    function getDienste() {
+        var txtFile = new XMLHttpRequest();
+        // var allText = "file not found";
+        txtFile.onreadystatechange = function () {
+            if (txtFile.readyState == 4 && txtFile.status == 200) {
+                var allText = txtFile.responseText;
+                allText = allText.split("\n").join("<br>").split("<br><br>");
+
+                // Add the infos of the closest 3 pharmacies 
+                for (var i = 0; i < 3; i++) {
+                    var dienst = 'dienst' + i.toString();
+                    document.getElementById(dienst).innerHTML = allText[i];
+                }
+                // Add the distance between the GlückAuf and the 3 pharmacies
+                var distances = allText[3].split("<br>")
+                console.log('dist', distances);
+                for (var j = 0; j < 3; j++) {
+                    var lat1 = parseFloat(distances[2 * j]);
+                    var lon1 = parseFloat(distances[(2 * j) + 1]);
+                    const lat2 = 51.524536;
+                    const lon2 = 6.928149;
+                    var dist = 'dist' + j.toString();
+                    var distInKm = getDistanceFromLatLonInKm(lat1, lat2, lon1, lon2);
+                    document.getElementById(dist).innerHTML = distInKm + ' km';
+                }
+            }
+
+        }
+        txtFile.open('GET', 'dienste.txt', true);
+        txtFile.send();
+    }
+
+    getDienste();
+
+    // Function to calculate the distance in km using lat & long
+    function getDistanceFromLatLonInKm(lat1,
+        lat2, lon1, lon2) {
+        // The math module contains a function
+        // named toRadians which converts from
+        // degrees to radians.
+        lon1 = lon1 * Math.PI / 180;
+        lon2 = lon2 * Math.PI / 180;
+        lat1 = lat1 * Math.PI / 180;
+        lat2 = lat2 * Math.PI / 180;
+
+        // Haversine formula
+        let dlon = lon2 - lon1;
+        let dlat = lat2 - lat1;
+        let a = Math.pow(Math.sin(dlat / 2), 2)
+            + Math.cos(lat1) * Math.cos(lat2)
+            * Math.pow(Math.sin(dlon / 2), 2);
+
+        let c = 2 * Math.asin(Math.sqrt(a));
+
+        // Radius of earth in kilometers. Use 3956
+        // for miles
+        let r = 6371;
+
+        // calculate the result
+        return (c * r).toFixed(2);
+    }
+</script>
+
+</html>

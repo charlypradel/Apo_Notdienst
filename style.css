@@ -1,0 +1,96 @@
+body{
+    background-color:#0827C5;
+    display: flex;
+    flex-flow: column wrap;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+header{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    width: 100vw;
+}
+
+#logo{
+    padding-left: 3.5vw;
+    padding-top: 3vw;
+    width: fit-content;
+}
+
+#notdienst{
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 1.5vw;
+    text-align: center;
+}
+
+#apos{
+    display: flex;
+    flex-flow: column wrap;
+    margin: 3vw;
+    padding-top: 1.5vw;
+    padding-left: 2.5vw;
+    padding-right: 2.5vw;
+    color: #0827C5;
+    background-color: white;
+    border-style: ridge;
+    border-radius: 5px;
+}
+
+.apo{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content:space-between;
+    font-size: 3.5vh;
+    align-items: center;
+}
+
+.distance{
+    font-size: 4vh;
+}
+
+.werbung{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    color: white; 
+    font-size: 5vh; 
+    text-shadow: 0px 4px 4px rgba(172, 157, 157, 0.25);
+}
+
+#gallery{
+	position: relative;
+	float: left;
+	width: 550px;
+}
+
+#gallery figure{
+	position: absolute;
+	display: inline-block;
+	z-index: 1;
+	animation: wechseln 30s infinite;
+}
+
+#gallery figure:last-of-type{
+	position: relative;
+}
+
+
+@keyframes wechseln{
+	0%	{opacity: 0;}
+	20%	{opacity: 1;}
+	40%	{opacity: 1;}
+	60%	{opacity: 0;}
+	100%{opacity: 0;}
+}
+
+#gallery figure:nth-of-type(2){
+	animation-delay: 10s;
+	opacity: 0;
+}
+
+#gallery figure:nth-of-type(3){
+	animation-delay: 20s;
+	opacity: 0;
+}
